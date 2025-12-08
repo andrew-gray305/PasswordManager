@@ -22,13 +22,12 @@ public class PasswordGenerator {
             // Numbers
             '0','1','2','3','4','5','6','7','8','9',
             // Symbols
-            '!','@','#','$','%','^','&','*','(',')','-','_',
-            '=', '+','[',']','{','}',';',':',',','.','?'
+            '!','@','#','$','%','^','&','*',';',':',',','.','?',
 
     };
 
     public int randomNum(){
-        int r1 = r.nextInt(85);
+        int r1 = r.nextInt(75);
 
         return r1;
     }
@@ -44,5 +43,7 @@ public class PasswordGenerator {
 
         return password;
     }
+
+
 
 }
