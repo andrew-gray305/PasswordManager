@@ -1,3 +1,5 @@
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,6 +15,10 @@ public class PasswordController {
         view.addActionListenerGoToHomeG(new ActionListenerGoToHomeG());
         view.addActionListenerGoToHomeC(new ActionListenerGoToHomeC());
         view.addActionListenerGoToHomeS(new ActionListenerGoToHomeS());
+        view.addActionListenerSetLength(new ActionListenerSetLength());
+        view.addActionListenerCheckPassword(new ActionListenerCheckPassword());
+
+        view.addChangeListenerLengthSlider(new ChangeListenerLengthSlider());
 
 
     }
@@ -21,9 +27,13 @@ public class PasswordController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            int length = view.getLengthSlider().getValue();
+
             PasswordGenerator passwordGenerator = new PasswordGenerator();
 
-            view.setPassword(passwordGenerator.generatePassword());
+            view.setPassword(passwordGenerator.generatePassword(length));
+
+
 
         }
     }
@@ -87,4 +97,48 @@ public class PasswordController {
 
         }
     }
+
+    public class ActionListenerSetLength implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.getGenPassword().setEnabled(true);
+
+
+        }
+    }
+
+    public class ActionListenerCheckPassword implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PasswordStrength passwordStrength = new PasswordStrength();
+
+            var result = passwordStrength.checkPasswordStrength(view.getEnterPassword().getText());
+
+            view.setStrengthOutput(passwordStrength.scoreCalc(result.score()));
+            view.setRecommendations(result.recommendations());
+
+
+
+        }
+    }
+
+    public class ChangeListenerLengthSlider implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+
+            view.getLengthValLabel().setText("" + view.getLengthSlider().getValue());
+            view.getGenPassword().setEnabled(false);
+
+
+        }
+    }
+
+
+
+
+
+
 }

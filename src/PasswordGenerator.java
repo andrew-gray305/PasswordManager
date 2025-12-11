@@ -7,7 +7,6 @@ public class PasswordGenerator {
 
     Random r = new Random();
 
-    private int numChars = 20; // default number of characters
     private String password = "";
 
 
@@ -27,14 +26,14 @@ public class PasswordGenerator {
     };
 
     public int randomNum(){
-        int r1 = r.nextInt(75);
+        int r1 = r.nextInt(74);
 
         return r1;
     }
 
 
-    public String generatePassword(){
-        for(int i = 0; i < numChars; i++){
+    public String generatePassword(int length){
+        for(int i = 0; i < length; i++){
 
             char randomChar = characters[randomNum()];
             password += randomChar;
