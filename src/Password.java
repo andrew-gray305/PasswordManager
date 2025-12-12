@@ -5,10 +5,13 @@ public class Password {
 
     private String service;
     private String username;
-    private String salt;
+    private byte[] salt;
     private int iterations;
     private String iv;
     private String ciphertext;
+
+    public Password(int id, String service, String username, String salt, int iterations, String iv, String ciphertext) {
+    }
 
     public String getService(){
         return service;
@@ -16,7 +19,7 @@ public class Password {
     public String getUsername(){
         return username;
     }
-    public String getSalt(){
+    public byte[] getSalt(){
         return salt;
     }
     public int getIterations(){
@@ -29,7 +32,7 @@ public class Password {
         return ciphertext;
     }
 
-    public Password(String service, String username, String salt, int iterations, String iv, String ciphertext) {
+    public Password(String service, String username, byte[] salt, int iterations, String iv, String ciphertext) {
 
         this.service = service;
         this.username = username;
@@ -42,7 +45,7 @@ public class Password {
     public void prepareInsertStatement(PreparedStatement ps) throws SQLException {
         ps.setString(1, service);
         ps.setString(2, username);
-        ps.setString(3, salt);
+        ps.setBytes(3, salt);
         ps.setInt(4, iterations);
         ps.setString(5, iv);
         ps.setString(6, ciphertext);
