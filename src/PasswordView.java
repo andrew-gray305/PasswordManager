@@ -15,11 +15,13 @@ public class PasswordView {
     private JButton storePass;
     private JButton checkPass;
     private JButton getPass;
+    private JButton getStats;;
+    private JTextArea statsOutput;
+
 
 
     // Generate password Page
     private JPanel genPassPanel;
-    private JPanel passButtonPanel;
     private JButton genPassword;
     private JButton backButtonGen;
     private JButton setLengthButton;
@@ -61,7 +63,10 @@ public class PasswordView {
     private JTextArea passwordOutput;
     private JButton backButtonGet;
     private JScrollPane scrollPane;
-
+    private JTextField searchBar;
+    private JButton searchButton;
+    private JButton sortByService;
+    private JButton sortByUsername;
 
 
 
@@ -79,6 +84,12 @@ public class PasswordView {
         storePass = new JButton("Store Passwords");
         checkPass = new JButton("Check Password Strength");
         getPass = new JButton("Get Your Stored Passwords");
+        getStats = new JButton("Get Password Manager Stats");
+        statsOutput = new JTextArea();
+
+
+
+
 
 
         // Generate Pass
@@ -125,18 +136,25 @@ public class PasswordView {
         getPassPanel = new JPanel();
         enterMasPasLabel = new JLabel("Enter Master Password:");
         enterMasterPasswordOutput = new JTextField(30);
-        passwordOutput = new JTextArea(50,50);
+        passwordOutput = new JTextArea(20,50);
         getPasswords = new JButton("Get Your Stored Passwords");
         backButtonGet = new JButton("Back to Home Page");
         scrollPane = new JScrollPane(passwordOutput,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED
+        );
+        searchBar = new JTextField(60);
+        searchButton = new JButton("Search");
+        sortByService = new JButton("Sort By Service");
+        sortByUsername = new JButton("Sort by Username");
+
 
 
 
 
 
     }
+
 
 
 
@@ -149,6 +167,8 @@ public class PasswordView {
         homeButtonPanel.add(storePass);
         homeButtonPanel.add(getPass);
         homePanel.add(homeButtonPanel, BorderLayout.CENTER);
+        homePanel.add(getStats, BorderLayout.NORTH);
+        homePanel.add(statsOutput,BorderLayout.SOUTH);
         jFrame.add(homePanel);
 
         //generate
@@ -192,12 +212,16 @@ public class PasswordView {
         getPassPanel.add(enterMasPasLabel);
         getPassPanel.add(enterMasterPasswordOutput);
         getPassPanel.add(getPasswords);
+        getPassPanel.add(searchBar);
+        getPassPanel.add(searchButton);
         getPassPanel.add(scrollPane);
         getPassPanel.add(backButtonGet);
+        getPassPanel.add(sortByService);
+        getPassPanel.add(sortByUsername);
 
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.pack();
-        jFrame.setSize(700, 900);
+        jFrame.setSize(700, 700);
         jFrame.setVisible(true);
 
 
@@ -223,9 +247,24 @@ public class PasswordView {
         getPasswords.addActionListener(Listener);
     }
 
+    public void addActionListenerSearch(ActionListener Listener){
+        searchButton.addActionListener(Listener);
+    }
+
+    public void addActionListenerGetStats(ActionListener Listener){
+        getStats.addActionListener(Listener);
+    }
 
     public void addActionListenerSetLength(ActionListener Listener){
         setLengthButton.addActionListener(Listener);
+    }
+
+    public void addActionListenerSortByService(ActionListener Listener){
+        sortByService.addActionListener(Listener);
+    }
+
+    public void addActionListenerSortByUsername(ActionListener Listener){
+        sortByUsername.addActionListener(Listener);
     }
 
 
@@ -249,6 +288,7 @@ public class PasswordView {
 
 
 
+
     //back buttons
     public void addActionListenerGoToHomeG(ActionListener Listener){
         backButtonGen.addActionListener(Listener);
@@ -266,6 +306,11 @@ public class PasswordView {
     public void addActionListenerGoToHomeGet(ActionListener Listener){
         backButtonGet.addActionListener(Listener);
     }
+
+    public void addActionListenerClosePopUp(ActionListener Listener){
+        backButtonGet.addActionListener(Listener);
+    }
+
 
 
 
@@ -290,6 +335,10 @@ public class PasswordView {
         return enterPassword;
     }
 
+    public JTextField getSearchBar() {
+        return searchBar;
+    }
+
     public void setPassword(String text) {
         this.password.setText(text);
     }
@@ -307,6 +356,10 @@ public class PasswordView {
 
     public void setStrengthOutput(String text) {
         this.strengthOutput.setText(text);
+    }
+
+    public void setStatsOutput(String text) {
+        this.statsOutput.setText(text);
     }
 
     public JTextField getEnterMasterPassword() {
@@ -376,6 +429,7 @@ public class PasswordView {
 
     }
 
+
     public void clearAllTextFields() {
         enterService.setText("");
         enterUsername.setText("");
@@ -388,6 +442,8 @@ public class PasswordView {
         password.setText("");
         strengthOutput.setText("");
         recommendations.setText("");
+        searchBar.setText("");
+        statsOutput.setText("");
     }
 
 }

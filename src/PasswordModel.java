@@ -98,11 +98,45 @@ public class PasswordModel {
         return passwords;
     }
 
-    public int getRowCount() {
+    public static ArrayList<Password> getAllPasswordsSearch(String search){
+        ArrayList<Password> passwords = new ArrayList<>();
+
+        String cmdSearch = "SELECT * FROM passwords WHERE LOWER(service) LIKE LOWER(?)";
+
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(cmdSearch)){
+            preparedStatement.setString(1, "%" + search + "%");
+
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+
+            while(rs.next()){
+
+                Password p = new Password(
+                        rs.getInt("id"),
+                        rs.getString("service"),
+                        rs.getString("username"),
+                        rs.getString("salt"),
+                        rs.getInt("iterations"),
+                        rs.getString("iv"),
+                        rs.getString("ciphertext")
+                );
+                passwords.add(p);
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return passwords;
+    }
+
+    public int getPassCount() {
         String cmdNum = "SELECT COUNT(*) FROM passwords";
 
-        try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(cmdNum)) {
+        try (Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(cmdNum)) {
 
             return rs.getInt(1);
 
@@ -110,6 +144,39 @@ public class PasswordModel {
             throw new RuntimeException(e);
         }
     }
+
+    public static int getUniqueServiceCount() {
+
+        String sql = "SELECT COUNT(DISTINCT service) FROM passwords";
+
+        try (Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
+
+            return rs.getInt(1);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String getMostCommonService() {
+
+        String sql = "SELECT service FROM passwords GROUP BY service ORDER BY COUNT(*) DESC LIMIT 1";
+
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getString("service");
+            }
+            return "N/A";
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 
 }

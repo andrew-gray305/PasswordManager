@@ -60,8 +60,15 @@ public class PasswordStorage {
         }
     }
 
-    public ArrayList<DecryptedPassword> decryptAll(char[] masterPassword) {
-        ArrayList<Password> encrypted = PasswordModel.getAllPasswords();
+    public ArrayList<DecryptedPassword> decryptAll(char[] masterPassword, String search) {
+        ArrayList<Password> encrypted;
+        if(search != null){
+            encrypted = PasswordModel.getAllPasswordsSearch(search);
+
+        }else{
+            encrypted = PasswordModel.getAllPasswords();
+
+        }
         ArrayList<DecryptedPassword> decrypted = new ArrayList<>();
 
         for (Password p : encrypted) {

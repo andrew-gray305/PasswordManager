@@ -22,6 +22,15 @@ public class PasswordController {
         view.addActionListenerGoToGetPass(new ActionListenerGoToGetPass());
         view.addActionListenerGoToHomeGet(new ActionListenerGoToHomeGet());
         view.addActionListenerGetPasswords(new ActionListenerGetPasswords());
+        view.addActionListenerSearch(new ActionListenerSearch());
+        view.addActionListenerGetStats(new ActionListenerGetStats());
+        view.addActionListenerSortByService(new ActionListenerSortByService());
+        view.addActionListenerSortByUsername(new ActionListenerSortByUsername());
+
+
+
+
+
 
 
 
@@ -183,10 +192,89 @@ public class PasswordController {
 
             String masterPassword = view.getEnterMasterPasswordOutput().getText();
 
-            view.setPasswordOutput(passwordStorage.decryptAll(masterPassword.toCharArray()));
+
+            view.setPasswordOutput(passwordStorage.decryptAll(masterPassword.toCharArray(), null));
 
         }
     }
+
+    public class ActionListenerSearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            PasswordStorage passwordStorage = new PasswordStorage();
+
+            String masterPassword = view.getEnterMasterPasswordOutput().getText();
+
+            String search = view.getSearchBar().getText();
+
+            view.setPasswordOutput(passwordStorage.decryptAll(masterPassword.toCharArray(), search));
+
+        }
+    }
+
+    public class ActionListenerSortByService implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+
+            PasswordStorage passwordStorage = new PasswordStorage();
+            Password password = new Password();
+
+            String masterPassword = view.getEnterMasterPasswordOutput().getText();
+
+
+            view.setPasswordOutput(Password.sortPasswordByService(passwordStorage.decryptAll(masterPassword.toCharArray(), null)));
+
+
+
+
+
+        }
+    }
+
+    public class ActionListenerSortByUsername implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            PasswordStorage passwordStorage = new PasswordStorage();
+            Password password = new Password();
+
+            String masterPassword = view.getEnterMasterPasswordOutput().getText();
+
+
+            view.setPasswordOutput(Password.sortPasswordByUsername(passwordStorage.decryptAll(masterPassword.toCharArray(), null)));
+
+        }
+    }
+
+    public class ActionListenerGetStats implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String output = "";
+            PasswordModel passwordModel = new PasswordModel();
+
+            output += passwordModel.getPassCount();
+            output += " Passwords in Database\n";
+            output += PasswordModel.getUniqueServiceCount();
+            output += " Unique Passwords\n";
+            output += " Most Common Service: ";
+            output += PasswordModel.getMostCommonService();
+
+            view.setStatsOutput(output);
+
+
+
+
+
+        }
+    }
+
+
 
 
 

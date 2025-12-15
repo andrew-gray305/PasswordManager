@@ -14,7 +14,6 @@ public class DatabaseConnection {
 
             connection = DriverManager.getConnection(URI);
         }
-        System.out.println(new File("passwords.db").getAbsolutePath());
 
         return connection;
     }
