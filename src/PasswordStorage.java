@@ -8,10 +8,12 @@ public class PasswordStorage {
 
         PasswordModel model = new PasswordModel();
 
-        byte[] salt;
+        byte[] salt = KeyDerivationFunction.generateSalt();
+
         int iterations;
 
-        salt = KeyDerivationFunction.generateSalt();
+
+        String saltb64 = Base64.getEncoder().encodeToString(salt);
         iterations = 150_000;
 
 
@@ -29,7 +31,7 @@ public class PasswordStorage {
             Password p = new Password(
                     service,
                     username,
-                    salt,
+                    saltb64,
                     iterations,
                     iv,
                     ciphertext
@@ -44,7 +46,7 @@ public class PasswordStorage {
 
     public String decryptStoredPassword(Password p, char[] masterPassword) {
 
-        byte[] salt = p.getSalt();
+        byte[] salt = Base64.getDecoder().decode(p.getSalt());;
         int iterations = p.getIterations();
 
         byte[] key = KeyDerivationFunction.deriveKey(masterPassword, salt, iterations);
@@ -63,19 +65,34 @@ public class PasswordStorage {
         ArrayList<DecryptedPassword> decrypted = new ArrayList<>();
 
         for (Password p : encrypted) {
-            String password = decryptStoredPassword(p, masterPassword);
+            try {
 
-            decrypted.add(new DecryptedPassword(
-                    p.getService(),
-                    p.getUsername(),
-                    password
-            ));
+                String password = decryptStoredPassword(p, masterPassword);
+                decrypted.add(new DecryptedPassword(p.getService(), p.getUsername(), password));
+
+            } catch (RuntimeException e) {
+
+                decrypted.add(new DecryptedPassword("[DECRYPT FAILED: wrong master or corrupted row]",
+                        "[DECRYPT FAILED: wrong master or corrupted row]",
+                        "[DECRYPT FAILED: wrong master or corrupted row]"
+                ));
+
+            }
         }
+
 
         return decrypted;
     }
 
-    public record DecryptedPassword(String service, String username, String password) {}
+    public record DecryptedPassword(String service, String username, String password) {
+
+        @Override
+        public String toString() {
+
+            return "Service:" + service + "\nUsername: " + username + "\nPassword: " + password + "\n------------------------\n";
+
+        }
+    }
 
 
 }

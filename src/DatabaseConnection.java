@@ -1,3 +1,4 @@
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ public class DatabaseConnection {
 
             connection = DriverManager.getConnection(URI);
         }
+        System.out.println(new File("passwords.db").getAbsolutePath());
 
         return connection;
     }

@@ -6,17 +6,17 @@ public class PasswordModel {
 
     private static Connection connection;
 
-    public PasswordModel() {
+
+    static {
         try {
-            this.connection = DatabaseConnection.getConnection();
-
+            connection = DatabaseConnection.getConnection();
             System.out.println("Connection Successful");
-
-            createTableIfNotExist();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+
 
 
     public static void createTableIfNotExist(){
@@ -26,7 +26,7 @@ public class PasswordModel {
                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                    service TEXT NOT NULL,
                    username TEXT NOT NULL,
-                   salt BLOB NOT NULL,
+                   salt TEXT NOT NULL,
                    iterations INTEGER NOT NULL,
                    iv TEXT NOT NULL,
                    ciphertext TEXT NOT NULL,
@@ -97,5 +97,19 @@ public class PasswordModel {
         }
         return passwords;
     }
+
+    public int getRowCount() {
+        String cmdNum = "SELECT COUNT(*) FROM passwords";
+
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(cmdNum)) {
+
+            return rs.getInt(1);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

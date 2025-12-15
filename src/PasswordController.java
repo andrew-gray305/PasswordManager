@@ -1,3 +1,4 @@
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,12 @@ public class PasswordController {
         view.addActionListenerGoToHomeS(new ActionListenerGoToHomeS());
         view.addActionListenerSetLength(new ActionListenerSetLength());
         view.addActionListenerCheckPassword(new ActionListenerCheckPassword());
+        view.addActionListenerStorePassword(new ActionListenerStorePassword());
+        view.addActionListenerGoToGetPass(new ActionListenerGoToGetPass());
+        view.addActionListenerGoToHomeGet(new ActionListenerGoToHomeGet());
+        view.addActionListenerGetPasswords(new ActionListenerGetPasswords());
+
+
 
         view.addChangeListenerLengthSlider(new ChangeListenerLengthSlider());
 
@@ -62,8 +69,19 @@ public class PasswordController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
             view.switchStorePanel();
 
+
+        }
+    }
+
+    public class ActionListenerGoToGetPass implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            view.switchGetPassPanel();
 
         }
     }
@@ -123,6 +141,55 @@ public class PasswordController {
 
         }
     }
+
+    public class ActionListenerStorePassword implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            String service = view.getEnterService().getText();
+            String username = view.getEnterUsername().getText();
+            String password = view.getEnterPasswordToStore().getText();
+            String masterPassword = view.getEnterMasterPassword().getText();
+
+            PasswordStorage passwordStorage = new PasswordStorage();
+            passwordStorage.storeUserPassword(service, username, password, masterPassword.toCharArray());
+
+            view.clearAllTextFields();
+
+
+
+
+        }
+    }
+
+    public class ActionListenerGoToHomeGet implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            view.switchHomePanel();
+
+
+        }
+    }
+
+    public class ActionListenerGetPasswords implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            PasswordStorage passwordStorage = new PasswordStorage();
+
+            String masterPassword = view.getEnterMasterPasswordOutput().getText();
+
+            view.setPasswordOutput(passwordStorage.decryptAll(masterPassword.toCharArray()));
+
+        }
+    }
+
+
+
 
     public class ChangeListenerLengthSlider implements ChangeListener {
 

@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class PasswordView {
 
@@ -13,7 +14,8 @@ public class PasswordView {
     private JButton generatePass;
     private JButton storePass;
     private JButton checkPass;
-    private JLabel title;
+    private JButton getPass;
+
 
     // Generate password Page
     private JPanel genPassPanel;
@@ -40,8 +42,28 @@ public class PasswordView {
 
     // Store Password Page
     private JPanel storePassPanel;
-    private JLabel sTitle;
+    private JButton storePassword;
+    private JLabel serviceLabel;
+    private JLabel usernameLabel;
+    private JLabel enterPassLabel;
+    private JLabel enterMasterPassLabel;
+    private JTextField enterService;
+    private JTextField enterUsername;
+    private JTextField enterPasswordToStore;
+    private JTextField enterMasterPassword;
     private JButton backButtonStore;
+
+    // get stored passwords page
+    private JPanel getPassPanel;
+    private JLabel enterMasPasLabel;
+    private JTextField enterMasterPasswordOutput;
+    private JButton getPasswords;
+    private JTextArea passwordOutput;
+    private JButton backButtonGet;
+    private JScrollPane scrollPane;
+
+
+
 
 
 
@@ -56,7 +78,8 @@ public class PasswordView {
         generatePass = new JButton("Generate Passwords");
         storePass = new JButton("Store Passwords");
         checkPass = new JButton("Check Password Strength");
-        title = new JLabel("Andrew's Password Manager");
+        getPass = new JButton("Get Your Stored Passwords");
+
 
         // Generate Pass
         genPassPanel = new JPanel();
@@ -85,18 +108,37 @@ public class PasswordView {
 
 
 
-
-
-
         //store pass
         storePassPanel = new JPanel();
-        sTitle = new JLabel("Store Password page");
+        enterService = new JTextField(60);
+        enterUsername = new JTextField(50);
+        enterPasswordToStore = new JTextField(50);
+        enterMasterPassword = new JTextField(50);
+        serviceLabel = new JLabel("Enter Service:");
+        usernameLabel = new JLabel("Enter Username:");
+        enterPassLabel = new JLabel("Enter Password to Store:");
+        enterMasterPassLabel = new JLabel("Enter Master Password:");
+        storePassword = new JButton("Store Your Password");
         backButtonStore = new JButton("Back to Home Page");
+
+        // get passwords
+        getPassPanel = new JPanel();
+        enterMasPasLabel = new JLabel("Enter Master Password:");
+        enterMasterPasswordOutput = new JTextField(30);
+        passwordOutput = new JTextArea(50,50);
+        getPasswords = new JButton("Get Your Stored Passwords");
+        backButtonGet = new JButton("Back to Home Page");
+        scrollPane = new JScrollPane(passwordOutput,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
 
 
 
 
     }
+
+
 
     public void initializeUI(){
         //home
@@ -105,7 +147,7 @@ public class PasswordView {
         homeButtonPanel.add(generatePass);
         homeButtonPanel.add(checkPass);
         homeButtonPanel.add(storePass);
-        homePanel.add(title, BorderLayout.NORTH);
+        homeButtonPanel.add(getPass);
         homePanel.add(homeButtonPanel, BorderLayout.CENTER);
         jFrame.add(homePanel);
 
@@ -134,9 +176,24 @@ public class PasswordView {
 
         //store
         storePassPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        storePassPanel.add(sTitle);
+        storePassPanel.add(serviceLabel);
+        storePassPanel.add(enterService);
+        storePassPanel.add(usernameLabel);
+        storePassPanel.add(enterUsername);
+        storePassPanel.add(enterPassLabel);
+        storePassPanel.add(enterPasswordToStore);
+        storePassPanel.add(enterMasterPassLabel);
+        storePassPanel.add(enterMasterPassword);
+        storePassPanel.add(storePassword);
         storePassPanel.add(backButtonStore);
 
+        //get
+        getPassPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        getPassPanel.add(enterMasPasLabel);
+        getPassPanel.add(enterMasterPasswordOutput);
+        getPassPanel.add(getPasswords);
+        getPassPanel.add(scrollPane);
+        getPassPanel.add(backButtonGet);
 
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.pack();
@@ -158,6 +215,19 @@ public class PasswordView {
         checkPassword.addActionListener(Listener);
     }
 
+    public void addActionListenerStorePassword(ActionListener Listener){
+        storePassword.addActionListener(Listener);
+    }
+
+    public void addActionListenerGetPasswords(ActionListener Listener){
+        getPasswords.addActionListener(Listener);
+    }
+
+
+    public void addActionListenerSetLength(ActionListener Listener){
+        setLengthButton.addActionListener(Listener);
+    }
+
 
     // go to buttons
 
@@ -171,6 +241,10 @@ public class PasswordView {
 
     public void addActionListenerGoToStorePass(ActionListener Listener){
         storePass.addActionListener(Listener);
+    }
+
+    public void addActionListenerGoToGetPass(ActionListener Listener){
+        getPass.addActionListener(Listener);
     }
 
 
@@ -188,9 +262,11 @@ public class PasswordView {
         backButtonStore.addActionListener(Listener);
     }
 
-    public void addActionListenerSetLength(ActionListener Listener){
-        setLengthButton.addActionListener(Listener);
+
+    public void addActionListenerGoToHomeGet(ActionListener Listener){
+        backButtonGet.addActionListener(Listener);
     }
+
 
 
     public void addChangeListenerLengthSlider(ChangeListener Listener){
@@ -218,8 +294,40 @@ public class PasswordView {
         this.password.setText(text);
     }
 
+    public void setPasswordOutput(ArrayList<PasswordStorage.DecryptedPassword> passwords) {
+        String text = "";
+
+        for (PasswordStorage.DecryptedPassword dp : passwords) {
+            text += dp;
+        }
+
+        passwordOutput.setText(text);
+    }
+
+
     public void setStrengthOutput(String text) {
         this.strengthOutput.setText(text);
+    }
+
+    public JTextField getEnterMasterPassword() {
+        return enterMasterPassword;
+    }
+
+    public JTextField getEnterUsername() {
+        return enterUsername;
+    }
+
+
+    public JTextField getEnterMasterPasswordOutput() {
+        return enterMasterPasswordOutput;
+    }
+
+    public JTextField getEnterService() {
+        return enterService;
+    }
+
+    public JTextField getEnterPasswordToStore() {
+        return enterPasswordToStore;
     }
 
     public void setRecommendations(String text) {
@@ -250,7 +358,13 @@ public class PasswordView {
 
     }
 
+    public void switchGetPassPanel(){
+        jFrame.getContentPane().removeAll();
+        jFrame.add(getPassPanel);
+        jFrame.revalidate();
+        jFrame.repaint();
 
+    }
 
     public void switchHomePanel(){
         jFrame.getContentPane().removeAll();
@@ -258,6 +372,23 @@ public class PasswordView {
         jFrame.revalidate();
         jFrame.repaint();
 
+        clearAllTextFields();
+
     }
+
+    public void clearAllTextFields() {
+        enterService.setText("");
+        enterUsername.setText("");
+        enterPasswordToStore.setText("");
+        enterMasterPassword.setText("");
+        enterMasterPasswordOutput.setText("");
+        enterPassword.setText("");
+
+        passwordOutput.setText("");
+        password.setText("");
+        strengthOutput.setText("");
+        recommendations.setText("");
+    }
+
 }
 
