@@ -13,12 +13,12 @@ Password Strength Checker
    3. system will generate a password rating and recommendations to make password stronger
    
 Secure Password Storage
-  1. Store Passwords
-    2. Enter service name, username, plaintext password, master password
-    3. press store password -> password encrypted using master password and stored in database
+  Store Passwords
+    1. Enter service name, username, plaintext password, master password
+    2. press store password -> password encrypted using master password and stored in database
 
-  1. Get Passwords
-     2. Enter Master password
-     3. press get password -> passwords decrypted and displayed
-     4. search bar
-     5. sort by service name or username
+  Get Passwords
+     1. Enter Master password
+     2. press get password -> passwords decrypted and displayed
+     3. search bar
+     4. sort by service name or username
