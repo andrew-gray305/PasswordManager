@@ -8,7 +8,7 @@ Password Generator
   c. press generate pass button -> generates strong password
 
 Password Strength Checker
-   a.Input your password into the text box
+   a. Input your password into the text box
    b. press check password
    c. system will generate a password rating and recommendations to make password stronger
    
